@@ -1,5 +1,5 @@
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from speech2action.config.settings import get_settings
 import sys
@@ -64,3 +64,45 @@ def create_gym_dir():
             print(f"[INFO] No .md files to copy from {prev_group_dir}")
     else:
         print(f"[INFO] No previous {next_group} directory found. No files copied.")
+
+
+def create_daily_note_for_date(date_obj, label="today"):
+    """
+    Create a daily note for the given date in the main Obsidian vault under 📆/<year-month>/<year-month-day>.md
+    Apply the daily template from Templates/Daily Note Template.md if it exists.
+    """
+    settings = get_settings()
+    obsidian_vault_path = getattr(settings, "OBSIDIAN_MAIN_VAULT_PATH", None)
+    if not obsidian_vault_path:
+        print(
+            f"[ERROR] OBSIDIAN_MAIN_VAULT_PATH is not set. Please set it in your .env file."
+        )
+        return
+    vault = Path(obsidian_vault_path)
+    year_month = date_obj.strftime("%Y-%m")
+    date_str = date_obj.strftime("%Y-%m-%d")
+    calendar_dir = vault / "📆" / year_month
+    calendar_dir.mkdir(parents=True, exist_ok=True)
+    note_path = calendar_dir / f"{date_str}.md"
+
+    # Check for template in Templates/Daily Note Template.md
+    template_path = vault / "Templates" / "Daily Note Template.md"
+    if template_path.exists():
+        content = template_path.read_text(encoding="utf-8")
+        note_path.write_text(content, encoding="utf-8")
+        print(
+            f"[INFO] Created {label}'s note {note_path} from template {template_path}"
+        )
+    else:
+        note_path.touch(exist_ok=True)
+        print(f"[INFO] Created blank {label}'s note {note_path} (no template found)")
+
+
+def create_daily_note():
+    create_daily_note_for_date(datetime.today().date(), label="today")
+
+
+def create_tomorrow_note():
+    create_daily_note_for_date(
+        datetime.today().date() + timedelta(days=1), label="tomorrow"
+    )

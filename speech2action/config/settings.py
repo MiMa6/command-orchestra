@@ -7,6 +7,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     OBSIDIAN_EXERCISE_VAULT_PATH: str
+    OBSIDIAN_MAIN_VAULT_PATH: str
 
     class Config:
         env_file = ".env"
