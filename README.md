@@ -1,10 +1,32 @@
 # 🎻 Command Orchestra 🪄
 
-Welcome to your **Speech-2-Action Playground**! 🗣️✨
+Welcome to your **Speech-2-Action Automation Playground**! 🗣️✨
 
 ## 🚀 Vision
 
 Build your own living operating system: command your machine with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. First up: Obsidian vault automation!
+
+## 🪄 Spells (Commands)
+
+| Spell                   | What it Does                                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `new gym` / `muscle up` | Create a new gym directory for today in your exercise vault, cycling exercise groups and copying previous notes |
+| `new day`               | Create today's daily note in your main Obsidian vault, using the daily template if available                    |
+| `new day two`           | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                 |
+
+**Daily notes are created at:**
+
+```
+<OBSIDIAN_MAIN_VAULT_PATH>/📆/<year-month>/<year-month-day>.md
+```
+
+**Template location:**
+
+```
+<OBSIDIAN_MAIN_VAULT_PATH>/Templates/Daily Note Template.md
+```
+
+---
 
 ## 🏗️ Architecture
 
@@ -50,19 +72,14 @@ Command-Orchestra/
    ```
 3. **Configure your Obsidian vault path in `.env`:**
    ```env
-   OBSIDIAN_EXERCISE_VAULT_PATH=/absolute/path/to/your/vault
+   OBSIDIAN_MAIN_VAULT_PATH=/absolute/path/to/your/main/vault
+   OBSIDIAN_EXERCISE_VAULT_PATH=/absolute/path/to/your/exercise/vault
    ```
 4. **Run the app from root:**
    ```bash
    python -m speech2action.main
    ```
 
-## 🧪 First Spell: "new gym"
-
-Type `new gym` — the system will create a new gym directory in your Obsidian vault for today, cycling through your exercise groups and copying previous notes!
-
 ---
-
-- Run the app as a module from root: `python -m speech2action.main`
 
 > Play, experiment, and extend — your digital symphony awaits! 🎶
