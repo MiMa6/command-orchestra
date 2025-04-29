@@ -1,17 +1,17 @@
 # 🎻 Command Orchestra 🪄
 
-Welcome to your **AI Agent Automation Playground**! 🗣️✨
+Welcome to your **AI Agent Automation Playground**!
 
 ## 🚀 Vision
 
-Build your own living operating system: command your AI Agent with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. First up: Obsidian vault automation!
+Build your own living operating system: command your AI Agent with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. Speech-2-Action! 🗣️✨
 
 ## 🪄 Spells (Commands)
 
 | Spell                        | What it Does                                                                                                    |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `spell book` / `list spells` | Shows all available spells and their descriptions                                                               |
-| `new gym` / `muscle up`      | Create a new gym directory for today in your exercise vault, cycling exercise groups and copying previous notes |
+| `new gym` / `muscle up`      | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
 | `new day`                    | Create today's daily note in your main Obsidian vault, using the daily template if available                    |
 | `new day two`                | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                 |
 
