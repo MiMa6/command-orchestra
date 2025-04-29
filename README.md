@@ -1,18 +1,19 @@
 # 🎻 Command Orchestra 🪄
 
-Welcome to your **Speech-2-Action Automation Playground**! 🗣️✨
+Welcome to your **AI Agent Automation Playground**! 🗣️✨
 
 ## 🚀 Vision
 
-Build your own living operating system: command your machine with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. First up: Obsidian vault automation!
+Build your own living operating system: command your AI Agent with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. First up: Obsidian vault automation!
 
 ## 🪄 Spells (Commands)
 
-| Spell                   | What it Does                                                                                                    |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `new gym` / `muscle up` | Create a new gym directory for today in your exercise vault, cycling exercise groups and copying previous notes |
-| `new day`               | Create today's daily note in your main Obsidian vault, using the daily template if available                    |
-| `new day two`           | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                 |
+| Spell                        | What it Does                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `spell book` / `list spells` | Shows all available spells and their descriptions                                                               |
+| `new gym` / `muscle up`      | Create a new gym directory for today in your exercise vault, cycling exercise groups and copying previous notes |
+| `new day`                    | Create today's daily note in your main Obsidian vault, using the daily template if available                    |
+| `new day two`                | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                 |
 
 **Daily notes are created at:**
 
@@ -32,7 +33,7 @@ Build your own living operating system: command your machine with your voice (or
 
 ```mermaid
 graph TD;
-    A[🎤 Voice Listener] --> B[🧠 Command Parser];
+    A[🎤 Voice Listener] --> B[🧠 Manager Agent];
     B --> C[🎶 Action Dispatcher];
     C --> D[🔧 Automation Scripts];
     D --> E[📂 Obsidian Vault];
@@ -41,6 +42,7 @@ graph TD;
 - **Modular**: Add new actions easily
 - **Configurable**: All settings via `.env` and Pydantic
 - **Extensible**: Plug in new voice models, scripts, or automations
+- **AI-Powered**: LLM-based command understanding
 
 ## 📦 Project Structure
 
@@ -51,7 +53,9 @@ Command-Orchestra/
 ├── README.md
 └── speech2action/
     ├── main.py
-    ├── actions/
+    │   ├── manager_agent.py  # OpenAI Agents implementation
+    │   ├── obsidian_automation.py
+    │   └── spell_book.py     # Spell definitions
     ├── config/
     └── core/
 ```
@@ -74,12 +78,10 @@ Command-Orchestra/
    ```env
    OBSIDIAN_MAIN_VAULT_PATH=/absolute/path/to/your/main/vault
    OBSIDIAN_EXERCISE_VAULT_PATH=/absolute/path/to/your/exercise/vault
+   OPENAI_API_KEY=your_openai_api_key  # Required for Agent mode
    ```
 4. **Run the app from root:**
    ```bash
    python -m speech2action.main
    ```
-
----
-
-> Play, experiment, and extend — your digital symphony awaits! 🎶
+   > Play, experiment, and extend — your digital symphony awaits! 🎶
