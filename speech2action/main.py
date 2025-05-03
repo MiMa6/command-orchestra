@@ -29,7 +29,7 @@ def main():
         # For now, use text input. Replace with real voice input later.
         transcript = listen_for_command()
 
-        if transcript.lower() == "exit":
+        if transcript.lower() in ["exit", "quit", "bye"]:
             print("Goodbye!")
             break
 

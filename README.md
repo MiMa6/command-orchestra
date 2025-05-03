@@ -8,12 +8,14 @@ Build your own living operating system: command your AI Agent with your voice (o
 
 ## 🪄 Spells (Commands)
 
-| Spell                        | What it Does                                                                                                    |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `spell book` / `list spells` | Shows all available spells and their descriptions                                                               |
-| `new gym` / `muscle up`      | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
-| `new day`                    | Create today's daily note in your main Obsidian vault, using the daily template if available                    |
-| `new day two`                | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                 |
+| Spell                                          | What it Does                                                                                                             |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `spell book` / `list spells`                   | Shows all available spells and their descriptions                                                                        |
+| `new gym` / `muscle up`                        | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
+| `new day`                                      | Create today's daily note in your main Obsidian vault, using the daily template if available                             |
+| `new day two`                                  | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                          |
+| `new running note` / `add running` / `log run` | Create a new running note for today in your exercise vault, copying the latest note content and updating the date        |
+| `new stairclimbing` / `stairs`                 | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
 
 **Daily notes are created at:**
 

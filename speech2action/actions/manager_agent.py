@@ -13,6 +13,8 @@ from speech2action.actions.obsidian_automation import (
     create_gym_dir,
     create_daily_note,
     create_tomorrow_note,
+    create_today_running_note,
+    create_today_stairclimbing_note,
 )
 from speech2action.actions.spell_book import list_spells, SPELLS
 
@@ -49,6 +51,26 @@ def create_note_for_tomorrow() -> str:
 
 
 @function_tool
+def create_today_running_note_tool() -> str:
+    """
+    Creates a new running note for today.
+    Use this when the user wants to log a run or create a running note.
+    """
+    create_today_running_note()
+    return "✅ Created a new running note for today"
+
+
+@function_tool
+def create_today_stairclimbing_note_tool() -> str:
+    """
+    Creates a new stairclimbing note for today.
+    Use this when the user wants to log stairclimbing or create a stairclimbing note.
+    """
+    create_today_stairclimbing_note()
+    return "✅ Created a new stairclimbing note for today"
+
+
+@function_tool
 def show_all_spells() -> str:
     """
     Shows all available spells and their descriptions.
@@ -77,6 +99,8 @@ manager_agent = Agent(
     - "new gym", "muscle up" → Create a new gym directory for workout tracking
     - "new day" → Create a daily note for today
     - "new day two" → Create a daily note for tomorrow
+    - "new running note", "add running", "log run" → Create a new running note for today
+    - "new stairclimbing note", "add stairclimbing", "log stairs", "log stairwalking" → Create a new stairclimbing note for today
     
     Always respond in a concise, helpful manner after executing the requested action.
     If you're not sure what the user wants, call the show_all_spells() function to help them.
@@ -85,6 +109,8 @@ manager_agent = Agent(
         create_gym_directory,
         create_today_note,
         create_note_for_tomorrow,
+        create_today_running_note_tool,
+        create_today_stairclimbing_note_tool,
         show_all_spells,
     ],
     output_type=CommandResult,
@@ -142,6 +168,8 @@ def get_command_from_text(text: str) -> Dict[str, Any]:
             "create_gym_directory": "create_gym_dir",
             "create_today_note": "create_daily_note",
             "create_note_for_tomorrow": "create_tomorrow_note",
+            "create_today_running_note_tool": "create_today_running_note",
+            "create_today_stairclimbing_note_tool": "create_today_stairclimbing_note",
             "show_all_spells": "list_spells",
         }
 
