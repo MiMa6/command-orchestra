@@ -19,6 +19,17 @@ SPELLS = {
         "triggers": ["new day two"],
         "description": "Creates a daily note for tomorrow",
     },
+    "🏃 New Running Note": {
+        "triggers": ["new running note", "add running", "log run"],
+        "description": "Creates a new running note for today",
+    },
+    "🧗 New Stairclimbing Note": {
+        "triggers": [
+            "new stairclimbing",
+            "stairs"
+        ],
+        "description": "Creates a new stairclimbing note for today",
+    },
 }
 
 
