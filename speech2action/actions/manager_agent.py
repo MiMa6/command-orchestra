@@ -15,6 +15,7 @@ from speech2action.actions.obsidian_automation import (
     create_tomorrow_note,
     create_today_running_note,
     create_today_stairclimbing_note,
+    create_today_mobility_note,
 )
 from speech2action.actions.spell_book import list_spells, SPELLS
 
@@ -71,6 +72,16 @@ def create_today_stairclimbing_note_tool() -> str:
 
 
 @function_tool
+def create_today_mobility_note_tool() -> str:
+    """
+    Creates a new mobility note for today.
+    Use this when the user wants to log mobility or create a mobility note.
+    """
+    create_today_mobility_note()
+    return "✅ Created a new mobility note for today"
+
+
+@function_tool
 def show_all_spells() -> str:
     """
     Shows all available spells and their descriptions.
@@ -96,11 +107,12 @@ manager_agent = Agent(
     
     You analyze user input and determine which function to call based on the following trigger phrases:
     - "spell book", "list spells", "show spells" → Show all available spells/commands
-    - "new gym", "muscle up" → Create a new gym directory for workout tracking
-    - "new day" → Create a daily note for today
-    - "new day two" → Create a daily note for tomorrow
-    - "new running note", "add running", "log run" → Create a new running note for today
-    - "new stairclimbing note", "add stairclimbing", "log stairs", "log stairwalking" → Create a new stairclimbing note for today
+    - "gym", "muscle up" → Create a new gym directory for workout tracking
+    - "day" → Create a daily note for today
+    - "tomorrow" → Create a daily note for tomorrow
+    - "running", "run" → Create a new running note for today
+    - "climbing", "stairs" → Create a new stairclimbing note for today
+    - "mobility" → Create a new mobility note for today
     
     Always respond in a concise, helpful manner after executing the requested action.
     If you're not sure what the user wants, call the show_all_spells() function to help them.
@@ -111,6 +123,7 @@ manager_agent = Agent(
         create_note_for_tomorrow,
         create_today_running_note_tool,
         create_today_stairclimbing_note_tool,
+        create_today_mobility_note_tool,
         show_all_spells,
     ],
     output_type=CommandResult,
@@ -170,6 +183,7 @@ def get_command_from_text(text: str) -> Dict[str, Any]:
             "create_note_for_tomorrow": "create_tomorrow_note",
             "create_today_running_note_tool": "create_today_running_note",
             "create_today_stairclimbing_note_tool": "create_today_stairclimbing_note",
+            "create_today_mobility_note_tool": "create_today_mobility_note",
             "show_all_spells": "list_spells",
         }
 

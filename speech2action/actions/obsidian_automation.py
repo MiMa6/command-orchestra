@@ -227,3 +227,52 @@ def create_today_running_note():
 
 def create_today_stairclimbing_note():
     create_stairclimbing_note_for_date(datetime.today().date(), label="stairclimbing")
+
+
+def create_mobility_note_for_date(date_obj, label="mobility"):
+    """
+    Create a mobility note for the given date in the exercise Obsidian vault under Mobility/<year>/<year-month>/Mobility - <year-month-day>.md
+    If a previous mobility note exists (in any year/month), copy its content to the new note and update the date:: line.
+    """
+    settings = get_settings()
+    obsidian_vault_path = getattr(settings, "OBSIDIAN_EXERCISE_VAULT_PATH", None)
+    if not obsidian_vault_path:
+        print(
+            f"[ERROR] OBSIDIAN_EXERCISE_VAULT_PATH is not set. Please set it in your .env file."
+        )
+        return
+    vault = Path(obsidian_vault_path)
+    year = date_obj.strftime("%Y")
+    year_month = date_obj.strftime("%Y-%m")
+    date_str = date_obj.strftime("%Y-%m-%d")
+    mobility_dir = vault / "Mobility" / year / year_month
+    mobility_dir.mkdir(parents=True, exist_ok=True)
+    note_path = mobility_dir / f"Mobility - {date_str}.md"
+
+    # Find all previous mobility notes in all subfolders (exclude today)
+    all_notes = sorted(vault.glob("Mobility/*/*/Mobility - *.md"))
+    prev_notes = [n for n in all_notes if n.stem != f"Mobility - {date_str}"]
+    if prev_notes:
+
+        def note_date(note):
+            try:
+                return datetime.strptime(
+                    note.stem.replace("Mobility - ", ""), "%Y-%m-%d"
+                )
+            except Exception:
+                return datetime.min
+
+        latest_note = max(prev_notes, key=note_date)
+        content = latest_note.read_text(encoding="utf-8")
+        updated_content = update_date_in_content(content, date_str)
+        note_path.write_text(updated_content, encoding="utf-8")
+        print(
+            f"[INFO] Created mobility note: {note_path} (copied from {latest_note}, date updated)"
+        )
+    else:
+        note_path.write_text(f"date:: {date_str}\n", encoding="utf-8")
+        print(f"[INFO] Created blank mobility note: {note_path}")
+
+
+def create_today_mobility_note():
+    create_mobility_note_for_date(datetime.today().date(), label="mobility")
