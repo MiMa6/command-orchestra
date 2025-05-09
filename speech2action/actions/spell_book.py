@@ -7,28 +7,29 @@ SPELLS = {
         "triggers": ["spell book", "list spells", "show spells"],
         "description": "Shows all available spells and their descriptions",
     },
-    "💪 New Gym": {
-        "triggers": ["new gym", "muscle up"],
+    "💪 Gym": {
+        "triggers": ["gym", "muscle up"],
         "description": "Creates a new gym directory for workout tracking",
     },
-    "📅 New Day": {
-        "triggers": ["new day"],
+    "📅 Day": {
+        "triggers": ["day"],
         "description": "Creates a daily note for today",
     },
-    "🔮 New Tomorrow": {
-        "triggers": ["new day two"],
+    "🔮 Tomorrow": {
+        "triggers": ["tomorrow"],
         "description": "Creates a daily note for tomorrow",
     },
-    "🏃 New Running Note": {
-        "triggers": ["new running note", "add running", "log run"],
+    "🏃 Running": {
+        "triggers": ["running", "run"],
         "description": "Creates a new running note for today",
     },
-    "🧗 New Stairclimbing Note": {
-        "triggers": [
-            "new stairclimbing",
-            "stairs"
-        ],
+    "🧗 Stairclimbing": {
+        "triggers": ["climbing", "stairs"],
         "description": "Creates a new stairclimbing note for today",
+    },
+    "🧘 Mobility": {
+        "triggers": ["mobility"],
+        "description": "Creates a new mobility note for today",
     },
 }
 
