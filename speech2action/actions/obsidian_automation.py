@@ -89,190 +89,137 @@ def create_gym_dir():
         print(f"[INFO] No previous {next_group} directory found. No files copied.")
 
 
-def create_daily_note_for_date(date_obj, label="today"):
+def create_note_for_date(
+    date_obj,
+    note_type: str,
+    vault_type: str = "exercise",  # "exercise" or "main"
+    base_dir: str = None,  # e.g., "Running", "Mobility", "📆"
+    note_prefix: str = None,  # e.g., "Running -", "Mobility -"
+    label: str = None,
+):
     """
-    Create a daily note for the given date in the main Obsidian vault under 📆/<year-month>/<year-month-day>.md
-    Apply the daily template from Templates/Daily Note Template.md if it exists.
+    Generic function to create notes for any type in Obsidian vault.
+    Args:
+        date_obj: datetime object for the note date
+        note_type: Type of note (e.g., "running", "mobility", "daily")
+        vault_type: Which vault to use ("exercise" or "main")
+        base_dir: Base directory name in the vault
+        note_prefix: Prefix for the note filename
+        label: Label for logging purposes
     """
     settings = get_settings()
-    obsidian_vault_path = getattr(settings, "OBSIDIAN_MAIN_VAULT_PATH", None)
-    if not obsidian_vault_path:
+    vault_path = (
+        settings.OBSIDIAN_EXERCISE_VAULT_PATH
+        if vault_type == "exercise"
+        else settings.OBSIDIAN_MAIN_VAULT_PATH
+    )
+    if not vault_path:
         print(
-            f"[ERROR] OBSIDIAN_MAIN_VAULT_PATH is not set. Please set it in your .env file."
+            f"[ERROR] OBSIDIAN_{vault_type.upper()}_VAULT_PATH is not set. Please set it in your .env file."
         )
         return
-    vault = Path(obsidian_vault_path)
+    vault = Path(vault_path)
+    year = date_obj.strftime("%Y")
     year_month = date_obj.strftime("%Y-%m")
     date_str = date_obj.strftime("%Y-%m-%d")
-    calendar_dir = vault / "📆" / year_month
-    calendar_dir.mkdir(parents=True, exist_ok=True)
-    note_path = calendar_dir / f"{date_str}.md"
 
-    # Check for template in Templates/Daily Note Template.md
-    template_path = vault / "Templates" / "Daily Note Template.md"
-    if template_path.exists():
-        content = template_path.read_text(encoding="utf-8")
-        note_path.write_text(content, encoding="utf-8")
+    # Handle daily notes differently
+    if note_type == "daily":
+        note_dir = vault / base_dir / year_month
+        note_dir.mkdir(parents=True, exist_ok=True)
+        note_path = note_dir / f"{date_str}.md"
+        # Check for template
+        template_path = vault / "Templates" / "Daily Note Template.md"
+        if template_path.exists():
+            content = template_path.read_text(encoding="utf-8")
+            note_path.write_text(content, encoding="utf-8")
+            print(
+                f"[INFO] Created {label}'s note {note_path} from template {template_path}"
+            )
+        else:
+            note_path.touch(exist_ok=True)
+            print(
+                f"[INFO] Created blank {label}'s note {note_path} (no template found)"
+            )
+        return
+
+    # For exercise notes
+    note_dir = vault / base_dir / year / year_month
+    note_dir.mkdir(parents=True, exist_ok=True)
+    note_path = note_dir / f"{note_prefix} {date_str}.md"
+    # Find all previous notes in all subfolders (exclude today)
+    all_notes = sorted(vault.glob(f"{base_dir}/*/*/{note_prefix} *.md"))
+    prev_notes = [n for n in all_notes if n.stem != f"{note_prefix} {date_str}"]
+    if prev_notes:
+
+        def note_date(note):
+            try:
+                return datetime.strptime(
+                    note.stem.replace(f"{note_prefix} ", ""), "%Y-%m-%d"
+                )
+            except Exception:
+                return datetime.min
+
+        latest_note = max(prev_notes, key=note_date)
+        content = latest_note.read_text(encoding="utf-8")
+        updated_content = update_date_in_content(content, date_str)
+        note_path.write_text(updated_content, encoding="utf-8")
         print(
-            f"[INFO] Created {label}'s note {note_path} from template {template_path}"
+            f"[INFO] Created {note_type} note: {note_path} (copied from {latest_note}, date updated)"
         )
     else:
-        note_path.touch(exist_ok=True)
-        print(f"[INFO] Created blank {label}'s note {note_path} (no template found)")
+        note_path.write_text(f"date:: {date_str}\n", encoding="utf-8")
+        print(f"[INFO] Created blank {note_type} note: {note_path}")
 
 
 def create_daily_note():
-    create_daily_note_for_date(datetime.today().date(), label="today")
-
-
-def create_tomorrow_note():
-    create_daily_note_for_date(
-        datetime.today().date() + timedelta(days=1), label="tomorrow"
+    create_note_for_date(
+        date_obj=datetime.today().date(),
+        note_type="daily",
+        vault_type="main",
+        base_dir="\U0001f4c6",  # 📆
+        label="today",
     )
 
 
-def create_running_note_for_date(date_obj, label="running"):
-    """
-    Create a running note for the given date in the exercise Obsidian vault under Running/<year>/<year-month>/Running - <year-month-day>.md
-    If a previous running note exists (in any year/month), copy its content to the new note and update the date:: line.
-    """
-    settings = get_settings()
-    obsidian_vault_path = getattr(settings, "OBSIDIAN_EXERCISE_VAULT_PATH", None)
-    if not obsidian_vault_path:
-        print(
-            f"[ERROR] OBSIDIAN_EXERCISE_VAULT_PATH is not set. Please set it in your .env file."
-        )
-        return
-    vault = Path(obsidian_vault_path)
-    year = date_obj.strftime("%Y")
-    year_month = date_obj.strftime("%Y-%m")
-    date_str = date_obj.strftime("%Y-%m-%d")
-    running_dir = vault / "Running" / year / year_month
-    running_dir.mkdir(parents=True, exist_ok=True)
-    note_path = running_dir / f"Running - {date_str}.md"
-
-    # Find all previous running notes in all subfolders (exclude today)
-    all_notes = sorted(vault.glob("Running/*/*/Running - *.md"))
-    prev_notes = [n for n in all_notes if n.stem != f"Running - {date_str}"]
-    if prev_notes:
-
-        def note_date(note):
-            try:
-                return datetime.strptime(
-                    note.stem.replace("Running - ", ""), "%Y-%m-%d"
-                )
-            except Exception:
-                return datetime.min
-
-        latest_note = max(prev_notes, key=note_date)
-        content = latest_note.read_text(encoding="utf-8")
-        updated_content = update_date_in_content(content, date_str)
-        note_path.write_text(updated_content, encoding="utf-8")
-        print(
-            f"[INFO] Created running note: {note_path} (copied from {latest_note}, date updated)"
-        )
-    else:
-        note_path.write_text(f"date:: {date_str}\n", encoding="utf-8")
-        print(f"[INFO] Created blank running note: {note_path}")
-
-
-def create_stairclimbing_note_for_date(date_obj, label="stairclimbing"):
-    """
-    Create a stair climbing note for the given date in the exercise Obsidian vault under Stairclimbing/<year>/<year-month>/Stair climbing <year-month-day>.md
-    If a previous stairclimbing note exists (in any year/month), copy its content to the new note and update the date:: line.
-    """
-    settings = get_settings()
-    obsidian_vault_path = getattr(settings, "OBSIDIAN_EXERCISE_VAULT_PATH", None)
-    if not obsidian_vault_path:
-        print(
-            f"[ERROR] OBSIDIAN_EXERCISE_VAULT_PATH is not set. Please set it in your .env file."
-        )
-        return
-    vault = Path(obsidian_vault_path)
-    year = date_obj.strftime("%Y")
-    year_month = date_obj.strftime("%Y-%m")
-    date_str = date_obj.strftime("%Y-%m-%d")
-    stair_dir = vault / "Stairclimbing" / year / year_month
-    stair_dir.mkdir(parents=True, exist_ok=True)
-    note_path = stair_dir / f"Stair climbing {date_str}.md"
-
-    # Find all previous stairclimbing notes in all subfolders (exclude today)
-    all_notes = sorted(vault.glob("Stairclimbing/*/*/Stair climbing *.md"))
-    prev_notes = [n for n in all_notes if n.stem != f"Stair climbing {date_str}"]
-    if prev_notes:
-
-        def note_date(note):
-            try:
-                return datetime.strptime(
-                    note.stem.replace("Stair climbing ", ""), "%Y-%m-%d"
-                )
-            except Exception:
-                return datetime.min
-
-        latest_note = max(prev_notes, key=note_date)
-        content = latest_note.read_text(encoding="utf-8")
-        updated_content = update_date_in_content(content, date_str)
-        note_path.write_text(updated_content, encoding="utf-8")
-        print(
-            f"[INFO] Created stair climbing note: {note_path} (copied from {latest_note}, date updated)"
-        )
-    else:
-        note_path.write_text(f"date:: {date_str}\n", encoding="utf-8")
-        print(f"[INFO] Created blank stair climbing note: {note_path}")
+def create_tomorrow_note():
+    create_note_for_date(
+        date_obj=datetime.today().date() + timedelta(days=1),
+        note_type="daily",
+        vault_type="main",
+        base_dir="\U0001f4c6",  # 📆
+        label="tomorrow",
+    )
 
 
 def create_today_running_note():
-    create_running_note_for_date(datetime.today().date(), label="running")
+    create_note_for_date(
+        date_obj=datetime.today().date(),
+        note_type="running",
+        vault_type="exercise",
+        base_dir="Running",
+        note_prefix="Running -",
+        label="running",
+    )
 
 
 def create_today_stairclimbing_note():
-    create_stairclimbing_note_for_date(datetime.today().date(), label="stairclimbing")
-
-
-def create_mobility_note_for_date(date_obj, label="mobility"):
-    """
-    Create a mobility note for the given date in the exercise Obsidian vault under Mobility/<year>/<year-month>/Mobility - <year-month-day>.md
-    If a previous mobility note exists (in any year/month), copy its content to the new note and update the date:: line.
-    """
-    settings = get_settings()
-    obsidian_vault_path = getattr(settings, "OBSIDIAN_EXERCISE_VAULT_PATH", None)
-    if not obsidian_vault_path:
-        print(
-            f"[ERROR] OBSIDIAN_EXERCISE_VAULT_PATH is not set. Please set it in your .env file."
-        )
-        return
-    vault = Path(obsidian_vault_path)
-    year = date_obj.strftime("%Y")
-    year_month = date_obj.strftime("%Y-%m")
-    date_str = date_obj.strftime("%Y-%m-%d")
-    mobility_dir = vault / "Mobility" / year / year_month
-    mobility_dir.mkdir(parents=True, exist_ok=True)
-    note_path = mobility_dir / f"Mobility - {date_str}.md"
-
-    # Find all previous mobility notes in all subfolders (exclude today)
-    all_notes = sorted(vault.glob("Mobility/*/*/Mobility - *.md"))
-    prev_notes = [n for n in all_notes if n.stem != f"Mobility - {date_str}"]
-    if prev_notes:
-
-        def note_date(note):
-            try:
-                return datetime.strptime(
-                    note.stem.replace("Mobility - ", ""), "%Y-%m-%d"
-                )
-            except Exception:
-                return datetime.min
-
-        latest_note = max(prev_notes, key=note_date)
-        content = latest_note.read_text(encoding="utf-8")
-        updated_content = update_date_in_content(content, date_str)
-        note_path.write_text(updated_content, encoding="utf-8")
-        print(
-            f"[INFO] Created mobility note: {note_path} (copied from {latest_note}, date updated)"
-        )
-    else:
-        note_path.write_text(f"date:: {date_str}\n", encoding="utf-8")
-        print(f"[INFO] Created blank mobility note: {note_path}")
+    create_note_for_date(
+        date_obj=datetime.today().date(),
+        note_type="stairclimbing",
+        vault_type="exercise",
+        base_dir="Stairclimbing",
+        note_prefix="Stair climbing",
+        label="stairclimbing",
+    )
 
 
 def create_today_mobility_note():
-    create_mobility_note_for_date(datetime.today().date(), label="mobility")
+    create_note_for_date(
+        date_obj=datetime.today().date(),
+        note_type="mobility",
+        vault_type="exercise",
+        base_dir="Mobility",
+        note_prefix="Mobility -",
+        label="mobility",
+    )
