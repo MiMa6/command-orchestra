@@ -31,6 +31,10 @@ SPELLS = {
         "triggers": ["mobility"],
         "description": "Creates a new mobility note for today",
     },
+    "🎹 Studio": {
+        "triggers": ["studio", "fl studio", "music studio"],
+        "description": "Launches FL Studio and opens the configured project.",
+    },
 }
 
 
