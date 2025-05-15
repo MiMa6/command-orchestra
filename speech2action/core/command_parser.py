@@ -6,13 +6,8 @@ def parse_command(transcript):
     Parses the transcript for known trigger phrases using the manager agent.
     Returns a command dict or None.
     """
-    # First try to process with the manager agent
-    command = get_command_from_text(transcript)
-    if command:
-        return command
-
-    # Legacy fallback parsing (for backward compatibility)
     lower = transcript.lower()
+    # Legacy fallback parsing (for backward compatibility)
     if "spell book" in lower or "list spells" in lower or "show spells" in lower:
         return {"action": "list_spells"}
     if "gym" in lower or "muscle up" in lower:
@@ -27,5 +22,10 @@ def parse_command(transcript):
         return {"action": "create_today_stairclimbing_note"}
     if "mobility" in lower:
         return {"action": "create_today_mobility_note"}
-    # Add more commands here as needed
+    if "studio" in lower or "fl studio" in lower or "music studio" in lower:
+        return {"action": "spell_studio"}
+    # Then try the agent
+    command = get_command_from_text(transcript)
+    if command:
+        return command
     return None

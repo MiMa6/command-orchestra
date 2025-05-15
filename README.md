@@ -16,6 +16,7 @@ Build your own living operating system: command your AI Agent with your voice (o
 | `new day two`                                  | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                          |
 | `new running note` / `add running` / `log run` | Create a new running note for today in your exercise vault, copying the latest note content and updating the date        |
 | `new stairclimbing` / `stairs`                 | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
+| `studio`                                       | Launch FL Studio and automatically open your drum project for a music session                                            |
 
 **Daily notes are created at:**
 
