@@ -3,3 +3,4 @@ pydantic
 pydantic-settings
 openai-agents
 pyautogui
+opencv-python
