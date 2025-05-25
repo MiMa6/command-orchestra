@@ -32,8 +32,12 @@ SPELLS = {
         "description": "Creates a new mobility note for today",
     },
     "🎹 Studio": {
-        "triggers": ["studio", "fl studio", "music studio"],
+        "triggers": ["studio", "fl", "music"],
         "description": "Launches FL Studio and opens the configured project.",
+    },
+    "🚴 Cycling": {
+        "triggers": ["cycling", "bike"],
+        "description": "Creates a new cycling note for today",
     },
 }
 

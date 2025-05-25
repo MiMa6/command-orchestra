@@ -16,6 +16,7 @@ from speech2action.actions.obsidian_automation import (
     create_today_running_note,
     create_today_stairclimbing_note,
     create_today_mobility_note,
+    create_today_cycling_note,
 )
 from speech2action.actions.spell_book import list_spells, SPELLS
 
@@ -82,6 +83,16 @@ def create_today_mobility_note_tool() -> str:
 
 
 @function_tool
+def create_today_cycling_note_tool() -> str:
+    """
+    Creates a new cycling note for today.
+    Use this when the user wants to log a cycling session or create a cycling note.
+    """
+    create_today_cycling_note()
+    return "✅ Created a new cycling note for today"
+
+
+@function_tool
 def show_all_spells() -> str:
     """
     Shows all available spells and their descriptions.
@@ -124,6 +135,7 @@ manager_agent = Agent(
         create_today_running_note_tool,
         create_today_stairclimbing_note_tool,
         create_today_mobility_note_tool,
+        create_today_cycling_note_tool,
         show_all_spells,
     ],
     output_type=CommandResult,
@@ -184,6 +196,7 @@ def get_command_from_text(text: str) -> Dict[str, Any]:
             "create_today_running_note_tool": "create_today_running_note",
             "create_today_stairclimbing_note_tool": "create_today_stairclimbing_note",
             "create_today_mobility_note_tool": "create_today_mobility_note",
+            "create_today_cycling_note_tool": "create_today_cycling_note",
             "show_all_spells": "list_spells",
         }
 

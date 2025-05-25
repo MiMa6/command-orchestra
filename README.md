@@ -17,6 +17,7 @@ Build your own living operating system: command your AI Agent with your voice (o
 | `new running note` / `add running` / `log run` | Create a new running note for today in your exercise vault, copying the latest note content and updating the date        |
 | `new stairclimbing` / `stairs`                 | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
 | `studio`                                       | Launch FL Studio and automatically open your drum project for a music session                                            |
+| `new cycling note` / `cycling` / `bike`        | Create a new cycling note for today in your exercise vault, copying the latest note content and updating the date        |
 
 **Daily notes are created at:**
 
@@ -56,11 +57,21 @@ Command-Orchestra/
 ├── README.md
 └── speech2action/
     ├── main.py
-    │   ├── manager_agent.py  # OpenAI Agents implementation
-    │   ├── obsidian_automation.py
-    │   └── spell_book.py     # Spell definitions
+    ├── actions/
+    │   ├── spell_book.py           # Spell definitions and triggers
+    │   ├── manager_agent.py        # OpenAI Agents implementation
+    │   ├── obsidian_automation.py  # Obsidian note automation
+    │   ├── flstudio_automation.py  # FL Studio automation
+    │   └── __init__.py
+    ├── core/
+    │   ├── command_parser.py       # Command parsing logic
+    │   ├── action_dispatcher.py    # Dispatches actions to automations
+    │   ├── voice_listener.py       # Voice/text input handler
+    │   └── __init__.py
     ├── config/
-    └── core/
+    │   ├── settings.py             # Environment/config management
+    │   └── __init__.py
+    └── __pycache__/
 ```
 
 ## 🛠️ Setup

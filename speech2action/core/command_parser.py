@@ -24,6 +24,8 @@ def parse_command(transcript):
         return {"action": "create_today_mobility_note"}
     if "studio" in lower or "fl studio" in lower or "music studio" in lower:
         return {"action": "spell_studio"}
+    if "cycling" in lower or "bike" in lower:
+        return {"action": "create_today_cycling_note"}
     # Then try the agent
     command = get_command_from_text(transcript)
     if command:
