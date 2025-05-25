@@ -223,3 +223,14 @@ def create_today_mobility_note():
         note_prefix="Mobility -",
         label="mobility",
     )
+
+
+def create_today_cycling_note():
+    create_note_for_date(
+        date_obj=datetime.today().date(),
+        note_type="cycling",
+        vault_type="exercise",
+        base_dir="Cycling",
+        note_prefix="Cycling -",
+        label="cycling",
+    )
