@@ -2,7 +2,7 @@
 
 Welcome to your **AI Agent Automation Playground**!
 
-## 🚀 Vision
+## 🧬 Vision
 
 Build your own living operating system: command your AI Agent with your voice (or text), and watch it orchestrate workflows, open apps, and automate your creative rituals. Speech-2-Action! 🗣️✨
 
