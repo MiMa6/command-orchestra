@@ -10,14 +10,14 @@ Build your own living operating system: command your AI Agent with your voice (o
 
 | Spell                                          | What it Does                                                                                                             |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `spell book` / `list spells`                   | Shows all available spells and their descriptions                                                                        |
-| `new gym` / `muscle up`                        | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
-| `new day`                                      | Create today's daily note in your main Obsidian vault, using the daily template if available                             |
-| `new day two`                                  | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                          |
-| `new running note` / `add running` / `log run` | Create a new running note for today in your exercise vault, copying the latest note content and updating the date        |
-| `new stairclimbing` / `stairs`                 | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
-| `studio`                                       | Launch FL Studio and automatically open your drum project for a music session                                            |
-| `new cycling note` / `cycling` / `bike`        | Create a new cycling note for today in your exercise vault, copying the latest note content and updating the date        |
+| `Spell book`            | Shows all available spells and their descriptions                                                                         |
+| `Studio`                                       | Launch FL Studio and automatically open your drum project for a music session                                           |
+| `New day`                                      | Create today's daily note in your main Obsidian vault, using the daily template if available                                |
+| `Tomorrow`                                     | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                           |
+| `Gym`                                          | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
+| `Running`                                      | Create a new running note for today in your exercise vault, copying the latest note content and updating the date           |
+| `Stairs`                                       | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
+| `Cycling`                                      | Create a new cycling note for today in your exercise vault, copying the latest note content and updating the date           |
 
 **Daily notes are created at:**
 
@@ -32,21 +32,6 @@ Build your own living operating system: command your AI Agent with your voice (o
 ```
 
 ---
-
-## 🏗️ Architecture
-
-```mermaid
-graph TD;
-    A[🎤 Voice Listener] --> B[🧠 Manager Agent];
-    B --> C[🎶 Action Dispatcher];
-    C --> D[🔧 Automation Scripts];
-    D --> E[📂 Obsidian Vault];
-```
-
-- **Modular**: Add new actions easily
-- **Configurable**: All settings via `.env` and Pydantic
-- **Extensible**: Plug in new voice models, scripts, or automations
-- **AI-Powered**: LLM-based command understanding
 
 ## 📦 Project Structure
 
