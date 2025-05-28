@@ -4,3 +4,6 @@ pydantic-settings
 openai-agents
 pyautogui
 opencv-python
+fastapi
+uvicorn[standard]
+python-multipart
