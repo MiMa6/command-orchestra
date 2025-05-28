@@ -23,30 +23,6 @@ def launch_fl_studio():
     print("[INFO] FL Studio should be running now.")
 
 
-def find_and_click(image_name, confidence=0.51, timeout=10):
-    """
-    Locate an image on the screen and click its center.
-    Args:
-        image_name (str): Filename of the image in the assets directory.
-        confidence (float): Matching confidence (0-1).
-        timeout (int): Seconds to keep searching before giving up.
-    Raises:
-        RuntimeError: If the image is not found within the timeout.
-    """
-    image_path = os.path.join(ASSETS_DIR, image_name)
-    print(f"[INFO] Looking for {image_name}...")
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        location = pyautogui.locateCenterOnScreen(image_path, confidence=confidence)
-        if location:
-            pyautogui.moveTo(location)
-            pyautogui.click()
-            print(f"[INFO] Clicked {image_name} at {location}")
-            return
-        time.sleep(0.5)
-    raise RuntimeError(f"Could not find {image_name} on screen.")
-
-
 def open_drum_project_pyautogui():
 
     print("Opening drum project...")
@@ -97,46 +73,6 @@ def open_drum_project_pyautogui():
     pyautogui.click()
 
     print("Done")
-
-
-# TODO: NOT working property, Not focusing on the right window
-def open_drum_project_screenshot():
-    """
-    Open the drum project in FL Studio using screenshot-based UI automation.
-    """
-    print("Opening drum project...")
-    # Open drum projet by clicking opt+1
-    pyautogui.keyDown("command")
-    pyautogui.press("o")
-    pyautogui.keyUp("command")
-    time.sleep(1)
-
-    # Click search
-    pyautogui.keyDown("command")
-    pyautogui.press("f")
-    pyautogui.keyUp("command")
-    time.sleep(1)
-
-    # Type project name
-    pyautogui.typewrite(PROJECT_NAME)
-    time.sleep(2)
-
-    # Step 4: Click the project icon
-    find_and_click("project_icon.png")
-    time.sleep(1)
-
-    # Step 5: Click the 'Open' button in the dialog
-    find_and_click("dialog_open_button.png")
-    time.sleep(1)
-
-    # Step 6: Interact with EZD3 as needed, using more screenshots
-    find_and_click("ezd3_file_button.png")
-    time.sleep(1)
-    find_and_click("open_recent.png")
-    time.sleep(1)
-    find_and_click("most_recent_save.png")
-    time.sleep(1)
-    find_and_click("bright_drumset.png")
 
     print("[INFO] Drum project opened using screenshots.")
 
