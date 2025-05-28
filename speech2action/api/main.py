@@ -118,9 +118,9 @@ async def root():
     </head>
     <body>
         <div class="header">
-            <h1 class="title">🎻 Command Orchestra</h1>
-            <p class="subtitle">"Orchestrate life with your voice 🌍✨"</p>
-            <p>Speech-2-Reality Automation Hub Backend</p>
+            <h1 class="title">🎻 Command Orchestra🪄</h1>
+            <p class="subtitle">"Orchestrate life with your voice 🗣️✨"</p>
+            <p>Speech-2-Reality Automation Hub</p>
         </div>
         
         <div class="endpoints">
