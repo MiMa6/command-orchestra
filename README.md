@@ -8,17 +8,10 @@ Build your own living operating system: command your AI Agent with your voice (o
 
 ## 🚀 FastAPI Backend
 
-The Command Orchestra now includes a powerful FastAPI backend that allows you to trigger automations from your frontend applications!
+The Command Orchestra includes FastAPI backend that allows you to trigger automations from your frontend applications!
 
-### Quick Start
+<img src="public/assets/images/Backend-28-5-2025.png" alt="Command Orchestra Frontend Screenshot" width="500">
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Start the API server
-python run_server.py
-```
 
 **API will be available at:**
 
@@ -35,35 +28,6 @@ python run_server.py
 - `GET /api/v1/automations` - List all available automations
 
 See [API_EXAMPLES.md](API_EXAMPLES.md) for detailed usage examples and frontend integration code.
-
-## 🪄 Spells (Commands)
-
-| Spell        | What it Does                                                                                                             |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| `Spell book` | Shows all available spells and their descriptions                                                                        |
-| `Studio`     | Launch FL Studio and automatically open your drum project for a music session                                            |
-| `New day`    | Create today's daily note in your main Obsidian vault, using the daily template if available                             |
-| `Tomorrow`   | Create tomorrow's daily note in your main Obsidian vault, using the daily template if available                          |
-| `Gym`        | Create a new gym obsidian directory for today in your exercise vault, cycling exercise groups and copying previous notes |
-| `Running`    | Create a new running note for today in your exercise vault, copying the latest note content and updating the date        |
-| `Stairs`     | Create a new stairclimbing note for today in your exercise vault, copying the latest note content and updating the date  |
-| `Cycling`    | Create a new cycling note for today in your exercise vault, copying the latest note content and updating the date        |
-
-**Daily notes are created at:**
-
-```
-<OBSIDIAN_MAIN_VAULT_PATH>/📆/<year-month>/<year-month-day>.md
-```
-
-**Template location:**
-
-```
-<OBSIDIAN_MAIN_VAULT_PATH>/Templates/Daily Note Template.md
-```
-
-## Frontend Repository
-
-🔗 **Frontend**: [Command Orchestra Frontend](https://github.com/MiMa6/command-orchestra-frontend) - The React frontend interface for voice and manual trigger command interaction
 
 ## 📦 Project Structure
 
@@ -98,6 +62,10 @@ Command-Orchestra/
     │   └── __init__.py
     └── __pycache__/
 ```
+## Frontend Repository
+
+🔗 **Frontend**: [Command Orchestra Frontend](https://github.com/MiMa6/command-orchestra-frontend) - The React frontend interface for voice and manual trigger command interaction
+
 
 ## 🛠️ Setup
 
