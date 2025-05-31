@@ -5,6 +5,7 @@ This module implements a manager agent that processes commands and routes them t
 
 from typing import Dict, Any, List, Optional
 import os
+import asyncio
 
 from agents import Agent, Runner, function_tool
 from pydantic import BaseModel, Field
@@ -157,6 +158,47 @@ def process_command(command: str) -> Dict[str, Any]:
         result = Runner.run_sync(manager_agent, command)
 
         # Extract the result information
+        if result and result.final_output:
+            return {
+                "success": True,
+                "action": result.final_output.action,
+                "message": result.final_output.explanation,
+            }
+        else:
+            return {
+                "success": False,
+                "action": None,
+                "message": "Failed to process command",
+            }
+    except Exception as e:
+        return {"success": False, "action": None, "message": f"Error: {str(e)}"}
+
+
+async def process_command_async(command: str) -> Dict[str, Any]:
+    """
+    Async version of process_command that runs the agent in a separate thread.
+
+    Args:
+        command: The user command text
+
+    Returns:
+        Dict with the result information including success status, action, and message
+    """
+    try:
+        # Run the sync agent in a thread pool to avoid event loop conflicts
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, _run_agent_sync, command)
+        return result
+    except Exception as e:
+        return {"success": False, "action": None, "message": f"Error: {str(e)}"}
+
+
+def _run_agent_sync(command: str) -> Dict[str, Any]:
+    """
+    Helper function to run the agent synchronously in a new thread.
+    """
+    try:
+        result = Runner.run_sync(manager_agent, command)
         if result and result.final_output:
             return {
                 "success": True,

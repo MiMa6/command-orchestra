@@ -185,18 +185,20 @@ async def process_voice_command(
     """Process voice commands through the existing speech2action system."""
 
     try:
-        # Parse the command using existing command parser
-        parsed_command = parse_command(request.command)
+        if request.use_agent:
+            # For agent mode, pass the raw command text directly
+            background_tasks.add_task(dispatch_action, request.command, use_agent=True)
+        else:
+            # For traditional mode, parse the command first
+            parsed_command = parse_command(request.command)
 
-        if not parsed_command:
-            raise HTTPException(
-                status_code=400, detail="Could not parse the voice command"
-            )
+            if not parsed_command:
+                raise HTTPException(
+                    status_code=400, detail="Could not parse the voice command"
+                )
 
-        # Dispatch action using existing dispatcher
-        background_tasks.add_task(
-            dispatch_action, parsed_command, use_agent=request.use_agent
-        )
+            # Dispatch action using existing dispatcher
+            background_tasks.add_task(dispatch_action, parsed_command, use_agent=False)
 
         return create_automation_response(
             success=True,
